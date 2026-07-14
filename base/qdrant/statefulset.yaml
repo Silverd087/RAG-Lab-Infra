@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: qdrant
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: qdrant}
+  updateStrategy:
+    type: RollingUpdate     
+  template:
+    metadata:
+      labels: {app: qdrant}
+    spec:
+      containers:
+      - name: qdrant
+        image: qdrant/qdrant:v1.15.5
+        ports: [{containerPort: 6333}, {containerPort: 6334}]
+        volumes:
+        - name: data
+          persistentVolumeClaim: qdrant-pvc
+        volumeMounts:
+        - name: data
+          mountPath: /qdrant/storage

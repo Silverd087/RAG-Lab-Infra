@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: rabbitmq}
+  updateStrategy:
+    type: RollingUpdate     
+  template:
+    metadata:
+      labels: {app: rabbitmq}
+    spec:
+      containers:
+      - name: rabbitmq
+        image:  rabbitmq:3.13-management-alpine
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+        volumes:
+        - name: data
+          persistentVolumeClaim: rabbitmq-pvc
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/rabbitmq

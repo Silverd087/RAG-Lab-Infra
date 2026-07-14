@@ -1,22 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rag-service-deployment
+  name: ingestion-service-deployment
 spec:
   replicas: 1
   selector:
-    matchLabels: {app: rag-service}
+    matchLabels: {app: ingestion-service}
   template:
     metadata:
       labels:
-        app: rag-service
+        app: ingestion-service
     spec:
       containers:
-      - name: rag-service
+      - name: ingestion-service
         image: 
-        command: uvicorn src.main:app --host 0.0.0.0 --port 8000
-        ports:
-          - containerPort: 8000
+        command: celery -A src.celery_app worker --queues ingestion --concurrency 2
         envFrom:
         - configMapRef:
             name: rag-common-config

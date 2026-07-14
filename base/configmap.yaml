@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: rag-service-config
+  name: rag-common-config
 data:
   POSTGRES_USER: "postgres"
   POSTGRES_HOST: "postgres"
