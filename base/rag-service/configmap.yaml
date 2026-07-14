@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-service-config
+data:
+  POSTGRES_USER: "postgres"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_DB: "RagLab"
+  POSTGRES_TEST_DB: "RagLabTest"
+  MINIO_ENDPOINT: "minio:9000"
+  MINIO_ROOT_USER: "rag_admin"
+  MINIO_BUCKET_NAME: "rag-documents"
+  QDRANT_URL: "http://qdrant:6333"
+  REDIS_URL: "redis://redis:6379"
+  RABBITMQ_DEFAULT_USER: "admin"
