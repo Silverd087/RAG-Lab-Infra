@@ -25,15 +25,15 @@ spec:
         - secretRef:
             name: rag-infra-secret
         startupProbe:
-          bash:
-             ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+          exec:
+            command: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
-          bash:
-             ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+          exec:
+            command: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
           initialDelaySeconds: 15
           periodSeconds: 5
           timeoutSeconds: 15

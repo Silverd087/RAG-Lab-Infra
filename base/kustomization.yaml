@@ -13,7 +13,7 @@ resources:
   - ./rabbitmq
   - configmap.yaml
   - ingress.yaml
-
+  - limitrange.yaml
 
 
 

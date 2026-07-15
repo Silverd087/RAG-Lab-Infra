@@ -29,14 +29,14 @@ spec:
         - name: data
           mountPath: /data
         startupProbe:
-          bash:
+          exec:
             command: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
-          bash:
+          exec:
             command: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
           initialDelaySeconds: 15
           periodSeconds: 10
