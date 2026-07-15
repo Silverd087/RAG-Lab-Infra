@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: minio
 spec:
+  serviceName: minio
   replicas: 1
   selector:
     matchLabels: {app: minio}
@@ -18,10 +19,37 @@ spec:
         ports:
         - containerPort: 9000
         - containerPort: 9001
-        volumes:
-        - name: data
-          persistentVolumeClaim: minio-pvc
+        args: ["server", "/data", "--console-address", ":9001"]
+        envFrom:
+        - configMapRef:
+            name: rag-common-config
+        - secretRef:
+            name: rag-infra-secret
         volumeMounts:
         - name: data
           mountPath: /data
-        command: server /data --console-address ":9001"
+        startupProbe:
+          bash:
+            command: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          bash:
+            command: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim: 
+          claimName: minio-pvc

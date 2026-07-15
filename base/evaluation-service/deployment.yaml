@@ -1,22 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rag-service-deployment
+  name: evaluation-service-deployment
 spec:
   replicas: 1
   selector:
-    matchLabels: {app: rag-service}
+    matchLabels: {app: evaluation-service}
   template:
     metadata:
       labels:
-        app: rag-service
+        app: evaluation-service
     spec:
       containers:
-      - name: rag-service
+      - name: evaluation-service
         image: 
-        command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
-        ports:
-          - containerPort: 8000
+        command: ["celery", "-A", "src.celery_app", "worker", "--queues", "evaluation", "--concurrency", "1"]
         envFrom:
         - configMapRef:
             name: rag-common-config
@@ -25,21 +23,19 @@ spec:
         - secretRef:
             name: rag-app-secret
         startupProbe:
-          httpGet:
-            path: /healthz
-            port: 8000
+          exec:
+            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
-          httpGet:
-            path: /readyz
-            port: 8000
+          exec:
+            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
           initialDelaySeconds: 15
-          periodSeconds: 10
+          periodSeconds: 30
           timeoutSeconds: 5
-          failureThreshold: 5
+          failureThreshold: 3
         resources:
           requests:
             cpu: 100m

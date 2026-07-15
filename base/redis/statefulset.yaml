@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: redis
 spec:
+  serviceName: redis
   replicas: 1
   selector:
     matchLabels: {app: redis}
@@ -17,9 +18,37 @@ spec:
         image: redis:7-alpine
         ports:
         - containerPort: 6379
-        volumes:
-        - name: data
-          persistentVolumeClaim: redis-pvc
+        envFrom:
+        - configMapRef:
+            name: rag-common-config
+        - secretRef:
+            name: rag-infra-secret
         volumeMounts:
         - name: data
           mountPath: /data
+        startupProbe:
+          bash:
+            command: ["CMD", "redis-cli", "ping"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          bash:
+            command: ["CMD", "redis-cli", "ping"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim: 
+          claimName: redis-pvc
+

@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: qdrant
 spec:
+  clusterIP: None
   selector:
     app: qdrant
   ports:

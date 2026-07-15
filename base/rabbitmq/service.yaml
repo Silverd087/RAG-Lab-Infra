@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: rabbitmq
 spec:
+  clusterIP: None
   selector:
     app: rabbitmq
   ports:

@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: rabbitmq
 spec:
+  serviceName: rabbitmq
   replicas: 1
   selector:
     matchLabels: {app: rabbitmq}
@@ -18,9 +19,37 @@ spec:
         ports:
         - containerPort: 5672
         - containerPort: 15672
-        volumes:
-        - name: data
-          persistentVolumeClaim: rabbitmq-pvc
+        envFrom:
+        - configMapRef:
+            name: rag-common-config
+        - secretRef:
+            name: rag-infra-secret
+        startupProbe:
+          bash:
+             ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          bash:
+             ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 15
+          failureThreshold: 5
         volumeMounts:
         - name: data
           mountPath: /var/lib/rabbitmq
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim: 
+          claimName: rabbitmq-pvc
+

@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: postgres
 spec:
+  serviceName: postgres
   replicas: 1
   selector:
     matchLabels: {app: postgres}
@@ -16,9 +17,36 @@ spec:
       - name: postgres
         image: postgres:15-alpine
         ports: [{containerPort: 5432}]
-        volumes:
-        - name: data
-          persistentVolumeClaim: postgres-pvc
+        envFrom:
+        - configMapRef:
+            name: rag-common-config
+        - secretRef:
+            name: rag-infra-secret
         volumeMounts:
         - name: data
           mountPath: /var/lib/postgresql/data
+        startupProbe:
+          bash:
+            command: ["CMD", "pg_isready", "-U", "postgres", "-d", "RagLab"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          bash:
+            command: ["CMD", "pg_isready", "-U", "postgres", "-d", "RagLab"]
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 5
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim: 
+          claimName: postgres-pvc

@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: qdrant
 spec:
+  serviceName: qdrant
   replicas: 1
   selector:
     matchLabels: {app: qdrant}
@@ -16,9 +17,37 @@ spec:
       - name: qdrant
         image: qdrant/qdrant:v1.15.5
         ports: [{containerPort: 6333}, {containerPort: 6334}]
-        volumes:
-        - name: data
-          persistentVolumeClaim: qdrant-pvc
+        envFrom:
+        - configMapRef:
+            name: rag-common-config
+        - secretRef:
+            name: rag-infra-secret
         volumeMounts:
         - name: data
           mountPath: /qdrant/storage
+        startupProbe:
+          bash:
+            ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          bash:
+            ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim: 
+          claimName: qdrant-pvc
+

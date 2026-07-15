@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: minio
 spec:
+  clusterIP: None
   selector:
     app: minio
   ports:
