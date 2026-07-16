@@ -14,3 +14,4 @@ data:
   QDRANT_URL: "http://qdrant:6333"
   REDIS_URL: "redis://redis:6379"
   RABBITMQ_DEFAULT_USER: "admin"
+  MINIO_PROMETHEUS_AUTH_TYPE: "public"

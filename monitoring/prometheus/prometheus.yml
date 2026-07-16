@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: rag-service
+    static_configs:
+      - targets: ["rag-service.development.svc:8000"]
+
+  - job_name: rabbitmq
+    static_configs:
+      - targets: ["rabbitmq.development.svc:15692"]
+
+  - job_name: qdrant
+    static_configs:
+      - targets: ["qdrant.development.svc:6333"]
+
+  - job_name: minio
+    metrics_path: /minio/v2/metrics/cluster
+    static_configs:
+      - targets: ["minio.development.svc:9000"]

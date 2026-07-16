@@ -28,14 +28,14 @@ spec:
           mountPath: /data
         startupProbe:
           exec:
-            command: ["CMD", "redis-cli", "ping"]
+            command: ["redis-cli", "ping"]
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
           exec:
-            command: ["CMD", "redis-cli", "ping"]
+            command: ["redis-cli", "ping"]
           initialDelaySeconds: 15
           periodSeconds: 10
           timeoutSeconds: 5

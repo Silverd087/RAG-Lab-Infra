@@ -1,0 +1,6 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: rag-service-deployment
+spec:
+  replicas: 2

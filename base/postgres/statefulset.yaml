@@ -27,14 +27,14 @@ spec:
           mountPath: /var/lib/postgresql/data
         startupProbe:
           exec:
-            command: ["CMD", "pg_isready", "-U", "postgres", "-d", "RagLab"]
+            command: ["pg_isready", "-U", "postgres", "-d", "RagLab"]
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 6
         readinessProbe:
           exec:
-            command: ["CMD", "pg_isready", "-U", "postgres", "-d", "RagLab"]
+            command: ["pg_isready", "-U", "postgres", "-d", "RagLab"]
           initialDelaySeconds: 15
           periodSeconds: 10
           timeoutSeconds: 5

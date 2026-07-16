@@ -4,29 +4,30 @@ kind: Kustomization
 resources:
   - ../../base
   - namespace.yaml
-  - ./secrets
+  - hpa.yaml
 
 images:
 - name: frontend
   newName: raglab/frontend
-  newTag: dev
+  newTag: prod
 
 - name: rag-service
   newName: raglab/rag-service
-  newTag: dev
+  newTag: prod
 
 - name: evaluation-service
   newName: raglab/evaluation-service
-  newTag: dev
+  newTag: prod
 
 - name: ingestion-service
   newName: raglab/ingestion-service
-  newTag: dev
+  newTag: prod
 
-namespace: development
+secretGenerator:
+  - name: rag-infra-secret
+    envs: [infra-secret.env]
+  - name: rag-app-secret
+    envs: [app-secret.env]
 
-patches:
-- path: patches/rag-service-replicas.yaml
-  target:
-    kind: Deployment
-    name: rag-service-deployment
+
+namespace: production
