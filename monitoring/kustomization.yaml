@@ -3,6 +3,7 @@ kind: Kustomization
 resources:
   - ./prometheus
   - ./grafana
+  - ./celery-exporter
   - namespace.yaml
 
 namespace: monitoring

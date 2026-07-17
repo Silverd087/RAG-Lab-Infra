@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-exporter
+  labels:
+    app: celery-exporter
+spec:
+  selector:
+    matchLabels:
+      app: celery-exporter
+  template:
+    metadata:
+      labels:
+        app: celery-exporter
+    spec:
+      containers:
+      - image:  danihodovic/celery-exporter:0.12.2
+        name: celery-exporter
+        command:
+        - /celery-exporter
+        args:
+        - --broker-url=$RABBITMQ_URL
+        ports:
+        - containerPort: 9808
+          name: celery-exporter
+        resources:
+          requests:
+            cpu: 10m
+            memory: 20Mi
+          limits:
+            cpu: 100m
+            memory: 50Mi
