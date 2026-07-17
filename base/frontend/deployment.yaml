@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 
+        image: ghcr.io/silverd087/raglab-frontend
         ports:
           - containerPort: 80
         startupProbe:

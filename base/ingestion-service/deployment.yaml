@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: ingestion-service
-        image: 
+        image: ghcr.io/silverd087/raglab-backend
         command: ["celery", "-A", "src.celery_app", "worker", "--queues", "ingestion", "--concurrency", "2"]
         envFrom:
         - configMapRef:

@@ -7,21 +7,11 @@ resources:
   - hpa.yaml
 
 images:
-- name: frontend
-  newName: raglab/frontend
-  newTag: prod
+- name: ghcr.io/silverd087/raglab-frontend
+  newTag: latest
+- name: ghcr.io/silverd087/raglab-backend
+  newTag: latest
 
-- name: rag-service
-  newName: raglab/rag-service
-  newTag: prod
-
-- name: evaluation-service
-  newName: raglab/evaluation-service
-  newTag: prod
-
-- name: ingestion-service
-  newName: raglab/ingestion-service
-  newTag: prod
 
 secretGenerator:
   - name: rag-infra-secret

@@ -7,21 +7,10 @@ resources:
   - ./secrets
 
 images:
-- name: frontend
-  newName: raglab/frontend
-  newTag: dev
-
-- name: rag-service
-  newName: raglab/rag-service
-  newTag: dev
-
-- name: evaluation-service
-  newName: raglab/evaluation-service
-  newTag: dev
-
-- name: ingestion-service
-  newName: raglab/ingestion-service
-  newTag: dev
+- name: ghcr.io/silverd087/raglab-frontend
+  newTag: latest
+- name: ghcr.io/silverd087/raglab-backend
+  newTag: latest
 
 namespace: development
 

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: rag-service
-        image: 
+        image: ghcr.io/silverd087/raglab-backend
         command: ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
         ports:
           - containerPort: 8000

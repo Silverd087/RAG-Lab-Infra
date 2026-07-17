@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: evaluation-service
-        image: 
+        image: ghcr.io/silverd087/raglab-backend
         command: ["celery", "-A", "src.celery_app", "worker", "--queues", "evaluation", "--concurrency", "1"]
         envFrom:
         - configMapRef:
