@@ -23,6 +23,9 @@ spec:
         ports:
         - containerPort: 9808
           name: celery-exporter
+        envFrom:
+        - secretRef:
+            name: celery-exporter-config
         resources:
           requests:
             cpu: 10m
