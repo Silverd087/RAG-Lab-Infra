@@ -7,14 +7,11 @@ spec:
   project: default 
   source: 
     repoURL: "https://github.com/Silverd087/RAG-Lab-Infra.git"
-    targetRevision: dev
+    targetRevision: main
     path: overlays/dev
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: development
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
       - CreateNamespace=true
