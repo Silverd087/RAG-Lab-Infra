@@ -14,7 +14,7 @@ spec:
       containers:
       - name: evaluation-service
         image: ghcr.io/silverd087/raglab-backend
-        command: ["celery", "-A", "src.celery_app", "worker", "--queues", "evaluation", "--concurrency", "1"]
+        command: ["celery", "-A", "src.celery_app", "worker", "-E", "--queues", "evaluation", "--concurrency", "1"]
         envFrom:
         - configMapRef:
             name: rag-common-config
@@ -28,7 +28,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 6
+          failureThreshold: 18
         readinessProbe:
           exec:
             command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
@@ -42,4 +42,4 @@ spec:
             memory: 128Mi
           limits:
             cpu: 500m
-            memory: 256Mi
+            memory: 1Gi

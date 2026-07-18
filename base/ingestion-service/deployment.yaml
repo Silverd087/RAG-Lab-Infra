@@ -14,7 +14,7 @@ spec:
       containers:
       - name: ingestion-service
         image: ghcr.io/silverd087/raglab-backend
-        command: ["celery", "-A", "src.celery_app", "worker", "--queues", "ingestion", "--concurrency", "2"]
+        command: ["celery", "-A", "src.celery_app", "worker", "-E", "--queues", "ingestion", "--concurrency", "2"]
         envFrom:
         - configMapRef:
             name: rag-common-config
@@ -24,22 +24,28 @@ spec:
             name: rag-app-secret
         startupProbe:
           exec:
-            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
+            command:
+            - bash
+            - -c
+            - grep -q "celery" /proc/1/cmdline   
           initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 8
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 6
         readinessProbe:
           exec:
-            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
-          initialDelaySeconds: 15
-          periodSeconds: 30
-          timeoutSeconds: 8
+            command:
+            - bash
+            - -c
+            - grep -q "celery" /proc/1/cmdline
+          initialDelaySeconds: 5
+          periodSeconds: 15
+          timeoutSeconds: 2
           failureThreshold: 3
         resources:
           requests:
-            cpu: 200m
-            memory: 128Mi
+            cpu: 500m
+            memory: 512Mi
           limits:
-            cpu: "1"
-            memory: 256Mi
+            cpu: "2"
+            memory: 2Gi

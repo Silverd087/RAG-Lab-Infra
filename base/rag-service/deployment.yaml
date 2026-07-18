@@ -28,10 +28,10 @@ spec:
           httpGet:
             path: /healthz
             port: 8000
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 12
+          periodSeconds: 5
           timeoutSeconds: 5
-          failureThreshold: 6
+          failureThreshold: 18
         readinessProbe:
           httpGet:
             path: /readyz
@@ -46,4 +46,4 @@ spec:
             memory: 128Mi
           limits:
             cpu: 500m
-            memory: 256Mi
+            memory: 1Gi

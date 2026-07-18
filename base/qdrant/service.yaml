@@ -7,7 +7,9 @@ spec:
   selector:
     app: qdrant
   ports:
-    - port: 6333
+    - name: http
+      port: 6333
       targetPort: 6333
-    - port: 6334
+    - name: grpc
+      port: 6334
       targetPort: 6334

@@ -14,12 +14,10 @@ spec:
         app: celery-exporter
     spec:
       containers:
-      - image:  danihodovic/celery-exporter:0.12.2
+      - image: danihodovic/celery-exporter:0.12.2
         name: celery-exporter
-        command:
-        - /celery-exporter
         args:
-        - --broker-url=$RABBITMQ_URL
+        - --broker-url=$(RABBITMQ_URL)
         ports:
         - containerPort: 9808
           name: celery-exporter
