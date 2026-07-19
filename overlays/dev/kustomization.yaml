@@ -12,7 +12,7 @@ images:
   newTag: sha-2ee9544
 - name: ghcr.io/silverd087/raglab-frontend
   newName: ghcr.io/silverd087/raglab-frontend
-  newTag: sha-2ee9544
+  newTag: sha-45aff01
 
 namespace: development
 
