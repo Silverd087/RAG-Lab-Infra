@@ -61,9 +61,24 @@ monitoring/
 
 **Rollback** = `git revert` the image-bump commit (or edit the tag in `overlays/dev/kustomization.yaml`) and let Argo CD sync.
 
-## Cluster bootstrap
+## Setup
 
-Prerequisites: a Kubernetes cluster (minikube works), `kubectl`, `kustomize`, and an nginx ingress controller (`minikube addons enable ingress`).
+### Prerequisites
+
+- A Kubernetes cluster — [minikube](https://minikube.sigs.k8s.io/docs/start/) works for local use
+- [`kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/) (a recent `kubectl` bundles it via `kubectl kustomize`/`kubectl apply -k`, but the standalone binary is needed for `kustomize edit`)
+- [`kubeseal`](https://github.com/bitnami-labs/sealed-secrets#installation) — CLI for the Sealed Secrets controller, only needed if you'll rotate/add dev secrets
+- An nginx ingress controller (`minikube addons enable ingress`)
+
+### Clone the repo
+
+```bash
+git clone https://github.com/Silverd087/RAG-Lab-Infra.git
+cd RAG-Lab-Infra
+```
+
+## Cluster bootstrap
 
 ```bash
 # 1. Cluster add-ons: metrics-server + sealed-secrets controller
