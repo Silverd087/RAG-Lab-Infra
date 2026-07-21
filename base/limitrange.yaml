@@ -12,7 +12,7 @@ spec:
       memory: 128Mi
     max:
       cpu: "2"
-      memory: 2Gi
+      memory: 4Gi
     min:
       cpu: 10m
       memory: 32Mi
