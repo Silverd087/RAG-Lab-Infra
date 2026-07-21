@@ -9,7 +9,7 @@ resources:
 images:
 - name: ghcr.io/silverd087/raglab-backend
   newName: ghcr.io/silverd087/raglab-backend
-  newTag: sha-45aff01
+  newTag: sha-453b2d4
 - name: ghcr.io/silverd087/raglab-frontend
   newName: ghcr.io/silverd087/raglab-frontend
   newTag: sha-45aff01
