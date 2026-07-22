@@ -30,20 +30,20 @@ spec:
             port: 8000
           initialDelaySeconds: 12
           periodSeconds: 5
-          timeoutSeconds: 5
-          failureThreshold: 18
+          timeoutSeconds: 10
+          failureThreshold: 24
         readinessProbe:
           httpGet:
             path: /readyz
             port: 8000
           initialDelaySeconds: 15
           periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 5
+          timeoutSeconds: 10
+          failureThreshold: 8
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 250m
+            memory: 256Mi
           limits:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 1500m
+            memory: 1536Mi
