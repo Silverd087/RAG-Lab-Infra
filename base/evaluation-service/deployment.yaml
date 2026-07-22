@@ -24,22 +24,22 @@ spec:
             name: rag-app-secret
         startupProbe:
           exec:
-            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
+            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]
           initialDelaySeconds: 5
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 15
           failureThreshold: 18
         readinessProbe:
           exec:
-            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]          
+            command: ["bash", "-c", "celery -A src.celery_app inspect ping -d celery@$HOSTNAME"]
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
+          timeoutSeconds: 15
+          failureThreshold: 6
         resources:
           requests:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 250m
+            memory: 256Mi
           limits:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 1500m
+            memory: 1536Mi

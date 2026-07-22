@@ -44,7 +44,7 @@ overlays/
     kustomization.yaml      # namespace production, latest tags, secretGenerator
     hpa.yaml                # horizontal pod autoscaling
 infrastructure/
-  kustomization.yaml        # cluster add-ons: metrics-server, sealed-secrets controller
+  kustomization.yaml        # cluster add-ons: sealed-secrets controller
 monitoring/
   prometheus/               # Deployment + PVC + scrape config
   grafana/                  # Deployment + PVC + Service
@@ -70,6 +70,7 @@ monitoring/
 - [`kustomize`](https://kubectl.docs.kubernetes.io/installation/kustomize/) (a recent `kubectl` bundles it via `kubectl kustomize`/`kubectl apply -k`, but the standalone binary is needed for `kustomize edit`)
 - [`kubeseal`](https://github.com/bitnami-labs/sealed-secrets#installation) — CLI for the Sealed Secrets controller, only needed if you'll rotate/add dev secrets
 - An nginx ingress controller (`minikube addons enable ingress`)
+- Metrics Server (`minikube addons enable metrics-server`) — needed for `kubectl top` and HPA; minikube's addon patches in `--kubelet-insecure-tls`, which the plain upstream manifest doesn't set and which minikube's kubelet cert requires
 
 ### Clone the repo
 
@@ -81,7 +82,8 @@ cd RAG-Lab-Infra
 ## Cluster bootstrap
 
 ```bash
-# 1. Cluster add-ons: metrics-server + sealed-secrets controller
+# 1. Cluster add-ons: metrics-server (minikube addon) + sealed-secrets controller
+minikube addons enable metrics-server
 kubectl apply -k infrastructure/
 
 # 2. Argo CD
@@ -141,7 +143,7 @@ For **prod**, `kustomization.yaml` uses a `secretGenerator` reading `app-secret.
 | Namespace | `development` | `production` |
 | Image tags | `sha-<short>`, pinned by app-repo CI on every `dev` push | `latest` (manual promotion) |
 | Secrets | SealedSecrets, committed | `secretGenerator` from local env files |
-| Scaling | Static replicas (patched per service) | HPA (needs metrics-server from `infrastructure/`) |
+| Scaling | Static replicas (patched per service) | HPA (needs `minikube addons enable metrics-server`) |
 | Argo CD app | `apps/rag-lab-dev.yaml` | none yet — applied manually |
 
 ## Monitoring
